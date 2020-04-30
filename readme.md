@@ -22,7 +22,7 @@ This is NOT the behaviour I want, because:
 - or there is a LONG time to apply config changes, if fache expiration is long
 
 What I want is:
-- Minimum calls to Config API 
+- Minimum calls to Config API, because I'm short in cash :P
 - Short cache expiration because I need the changes are applied ASAP
 
 **So I need to trigger the refresh requests explicitly**
@@ -33,3 +33,5 @@ I don't want the refresh triggered by the middleware, but to call it explicitely
 - I'll implement the refresh as it is done in the class Microsoft.Azure.AppConfiguration.AspNetCore.AzureAppConfigurationRefreshMiddleware, found in Microsoft repo https://github.com/Azure/AppConfiguration-DotnetProvider
 - NOTE: it's important to use IOptionsSnapshot, and not IOptions (wouldn't refresh anyway unless restarted the application), nor IOptionsMonitor (could change the values in the middle of a request potentially leading to weird results).
 
+### nuget
+dotnet nuget push --api-key oy2jligjxyt4e7rkn2mafbmv3fgdo7bezphnd6pba6njya --source https://api.nuget.org/v3/index.json
