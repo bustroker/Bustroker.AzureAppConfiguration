@@ -1,5 +1,81 @@
-## official Microsoft documentation
+## Microsoft documentation for dynamic config usage
 https://docs.microsoft.com/en-us/azure/azure-app-configuration/enable-dynamic-configuration-aspnet-core?tabs=core3x
+
+## Use OnDemandAzureAppConfigurationRefresher
+>See Bustroker.AzureAppConfiguration.WebApi usage
+- Add a refreshing ConfigurationProvider
+```
+// Program.CreateHostBuilder(...)
+webBuilder                        
+    .ConfigureAppConfiguration((hostingContext, config) =>
+        {
+            var settings = config.Build();
+            config.AddAzureAppConfiguration(options =>
+            {
+                options.Connect(settings["ConnectionStrings:AzAppConfigurationConnectionString"])
+                        .ConfigureRefresh(refreshOptions =>
+                        {
+                            refreshOptions.Register("arch-pocs-configuration:AppSettings:sentinel", refreshAll: true)
+                                    .SetCacheExpiration(TimeSpan.FromSeconds(1));
+                        });
+            });
+        })
+```
+- Register a configuration section so it's bound against TOptions, and IAzureAppConfigurationRefresher service
+```
+// Startup.ConfigureServices(...)
+services.Configure<AppSettings>(Configuration.GetSection("arch-pocs-configuration:AppSettings"));
+services.AddScoped<IAzureAppConfigurationRefresher, OnDemandAzureAppConfigurationRefresher>();
+```
+
+- Note: DO NOT configure the configuration refreshing middleware (app.UseAzureAppConfiguration()), which is actually the whole point.
+
+- To use the configuration values, inject IOptionsSnapshot into the Controller
+```
+// AzAppConfigurationController.cs
+[ApiController]
+[Route("[controller]")]
+public class AzAppConfigurationController : ControllerBase
+{
+    private readonly AppSettings _appSettings;
+
+    public AzAppConfigurationController(IOptionsSnapshot<AppSettings> appSettings)
+    {
+        _appSettings = appSettings.Value;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        await Task.CompletedTask;
+        return Ok(_appSettings);
+    }
+}
+```
+
+- To refresh configuration with new values in AzureAppConfig service, inject IAzureAppConfigurationRefresher into a Controller
+```
+// RefreshAzAppConfigurationController
+
+[ApiController]
+[Route("[controller]")]
+public class RefreshAzAppConfigurationController : ControllerBase
+{
+    private readonly IAzureAppConfigurationRefresher _azureAppConfigurationRefresher;
+
+    public RefreshAzAppConfigurationController(IAzureAppConfigurationRefresher onDemandConfigurationRefresher)
+    {
+        _azureAppConfigurationRefresher = onDemandConfigurationRefresher;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        var result = await _azureAppConfigurationRefresher.TryRefreshAllRegisteredKeysAsync();
+        return Ok(result);
+    }
+}
+```
 
 ## Parámetros en Azure AppConfiguration
 arch-pocs-configuration:AppSettings:Sentinel 
@@ -32,5 +108,8 @@ I don't want the refresh triggered by the middleware, but to call it explicitly,
 - I'll implement the refresh as it is done in the class Microsoft.Azure.AppConfiguration.AspNetCore.AzureAppConfigurationRefreshMiddleware, found in Microsoft repo https://github.com/Azure/AppConfiguration-DotnetProvider
 - **NOTE: it's important to use IOptionsSnapshot, and not IOptions (wouldn't refresh anyway unless restarted the application), nor IOptionsMonitor (could change the values in the middle of a request potentially leading to weird results).**
 
-### push nuget package
-dotnet nuget push --api-key [APIKEY] --source https://api.nuget.org/v3/index.json
+### pack and push nuget package
+```
+dotnet pack
+dotnet nuget push [package.nupkg] --api-key [APIKEY] --source https://api.nuget.org/v3/index.json
+```
