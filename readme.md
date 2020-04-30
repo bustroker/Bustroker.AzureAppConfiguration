@@ -1,10 +1,9 @@
 ## official Microsoft documentation
 https://docs.microsoft.com/en-us/azure/azure-app-configuration/enable-dynamic-configuration-aspnet-core?tabs=core3x
 
-## AzAppSettingsController
-- Parámetros en Az AppConfiguration
-arch-pocs-configuration:AppSettings:Sentinel => 1
-arch-pocs-configuration:AppSettings:TerminalId => mr orange
+## Parámetros en Azure AppConfiguration
+arch-pocs-configuration:AppSettings:Sentinel 
+arch-pocs-configuration:AppSettings:TerminalId
 
 ### Remarks
 As per documentation, refering to 
@@ -31,7 +30,7 @@ What I want is:
 I don't want the refresh triggered by the middleware, but to call it explicitely, so:
 - I won't register the AppConfiguration middleware in Startup.Configure
 - I'll implement the refresh as it is done in the class Microsoft.Azure.AppConfiguration.AspNetCore.AzureAppConfigurationRefreshMiddleware, found in Microsoft repo https://github.com/Azure/AppConfiguration-DotnetProvider
-- NOTE: it's important to use IOptionsSnapshot, and not IOptions (wouldn't refresh anyway unless restarted the application), nor IOptionsMonitor (could change the values in the middle of a request potentially leading to weird results).
+- **NOTE: it's important to use IOptionsSnapshot, and not IOptions (wouldn't refresh anyway unless restarted the application), nor IOptionsMonitor (could change the values in the middle of a request potentially leading to weird results).**
 
-### push nuget
-dotnet nuget push --api-key <APIKEY> --source https://api.nuget.org/v3/index.json
+### push nuget package
+dotnet nuget push --api-key [APIKEY] --source https://api.nuget.org/v3/index.json
