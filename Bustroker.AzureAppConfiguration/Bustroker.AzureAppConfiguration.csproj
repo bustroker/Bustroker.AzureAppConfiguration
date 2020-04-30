@@ -7,10 +7,11 @@
     <PackageId>Bustroker.AzureAppConfigurationRefresher</PackageId>
     <Authors>Luis Mesa</Authors>
     <Version>0.0.1</Version>
-    <PackageVersion>0.0.1</PackageVersion>
+    <PackageVersion>0.0.2</PackageVersion>
     <Authors>Luis Mesa</Authors>
     <Company>Bustroker</Company>
     <Description>Refresher for AzureAppConfiguration, particularly to implement a refresh cycle out of the http request middleware.</Description>
     <PackageLicense>https://opensource.org/licenses/mit-license.php</PackageLicense>
+    <RepositoryUrl>https://gitlab.com/luismesagravedeperalta/bustroker.azureappconfigurationrefresher</RepositoryUrl>
   </PropertyGroup>
 </Project>

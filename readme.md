@@ -27,7 +27,7 @@ What I want is:
 **So I need to trigger the refresh requests explicitly**
 
 ### Implementing my own refreshing cycle
-I don't want the refresh triggered by the middleware, but to call it explicitely, so:
+I don't want the refresh triggered by the middleware, but to call it explicitly, so:
 - I won't register the AppConfiguration middleware in Startup.Configure
 - I'll implement the refresh as it is done in the class Microsoft.Azure.AppConfiguration.AspNetCore.AzureAppConfigurationRefreshMiddleware, found in Microsoft repo https://github.com/Azure/AppConfiguration-DotnetProvider
 - **NOTE: it's important to use IOptionsSnapshot, and not IOptions (wouldn't refresh anyway unless restarted the application), nor IOptionsMonitor (could change the values in the middle of a request potentially leading to weird results).**
