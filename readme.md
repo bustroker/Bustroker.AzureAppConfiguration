@@ -15,7 +15,7 @@ webBuilder
                 options.Connect(settings["ConnectionStrings:AzAppConfigurationConnectionString"])
                         .ConfigureRefresh(refreshOptions =>
                         {
-                            refreshOptions.Register("arch-pocs-configuration:AppSettings:sentinel", refreshAll: true)
+                            refreshOptions.Register("bustroker-pocs-configuration:AppSettings:sentinel", refreshAll: true)
                                     .SetCacheExpiration(TimeSpan.FromSeconds(1));
                         });
             });
@@ -24,7 +24,7 @@ webBuilder
 - Register a configuration section so it's bound against TOptions, and IAzureAppConfigurationRefresher service
 ```
 // Startup.ConfigureServices(...)
-services.Configure<AppSettings>(Configuration.GetSection("arch-pocs-configuration:AppSettings"));
+services.Configure<AppSettings>(Configuration.GetSection("bustroker-pocs-configuration:AppSettings"));
 services.AddScoped<IAzureAppConfigurationRefresher, OnDemandAzureAppConfigurationRefresher>();
 ```
 
@@ -77,9 +77,9 @@ public class RefreshAzAppConfigurationController : ControllerBase
 }
 ```
 
-## Parámetros en Azure AppConfiguration
-arch-pocs-configuration:AppSettings:Sentinel 
-arch-pocs-configuration:AppSettings:TerminalId
+## Create Azure AppConfiguration service with parámeters:
+bustroker-pocs-configuration:AppSettings:Sentinel => 0
+bustroker-pocs-configuration:AppSettings:BadGuyName => Mr Orange
 
 ### Remarks
 As per documentation, refering to 
