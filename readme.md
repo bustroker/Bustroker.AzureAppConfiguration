@@ -56,6 +56,8 @@ public class AzAppConfigurationController : ControllerBase
 }
 ```
 
+- **NOTE: it's important to use IOptionsSnapshot, and not IOptions (wouldn't refresh anyway unless restarted the application), nor IOptionsMonitor (could change the values in the middle of a request potentially leading to weird results).**
+
 ### To refresh configuration with new values in AzureAppConfig service, inject IAzureAppConfigurationRefresher into a Controller
 ```
 // RefreshAzAppConfigurationController
