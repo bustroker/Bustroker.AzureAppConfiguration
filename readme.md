@@ -2,7 +2,12 @@
 https://docs.microsoft.com/en-us/azure/azure-app-configuration/enable-dynamic-configuration-aspnet-core?tabs=core3x
 
 ## Use OnDemandAzureAppConfigurationRefresher
->See Bustroker.AzureAppConfiguration.WebApi usage
+>**_Note: See Bustroker.AzureAppConfiguration.WebApi usage_**
+
+- Create Azure AppConfiguration service with parámeters:
+bustroker-pocs-configuration:AppSettings:Sentinel => 0
+bustroker-pocs-configuration:AppSettings:BadGuyName => Mr Orange
+
 - Add a refreshing ConfigurationProvider
 ```
 // Program.CreateHostBuilder(...)
@@ -76,10 +81,6 @@ public class RefreshAzAppConfigurationController : ControllerBase
     }
 }
 ```
-
-## Create Azure AppConfiguration service with parámeters:
-bustroker-pocs-configuration:AppSettings:Sentinel => 0
-bustroker-pocs-configuration:AppSettings:BadGuyName => Mr Orange
 
 ### Remarks
 As per documentation, refering to 
