@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
@@ -26,19 +27,29 @@ namespace Bustroker.AzureAppConfiguration
                     _configurationRefreshers.Add(refresher);
                 }
             }
-            
+        }
+
+        public OnDemandAzureAppConfigurationRefresher(IEnumerable<IConfigurationRefresher> configurationRefreshers)
+        {
+            _configurationRefreshers = configurationRefreshers.ToList();
         }
 
         public int RegisteredConfigurationRefreshersCount => _configurationRefreshers.Count;
 
         public async Task RefreshAllRegisteredKeysAsync()
         {
-            var refreshTasks = new List<Task>();
-            foreach (var refresher in _configurationRefreshers)
+            Task compositeTask = null;
+            var refreshersTasks = new List<Task>();
+            try
             {
-                refreshTasks.Add(refresher.RefreshAsync());
+                _configurationRefreshers.ForEach(r => refreshersTasks.Add(r.RefreshAsync()));
+                compositeTask = Task.WhenAll(refreshersTasks);
+                await compositeTask;
             }
-            await Task.WhenAll(refreshTasks);
+            catch (Exception)
+            {
+                throw compositeTask.Exception;
+            }
         }
     }
 }
