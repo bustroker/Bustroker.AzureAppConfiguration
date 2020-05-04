@@ -28,8 +28,8 @@ namespace Bustroker.AzureAppConfiguration.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = await _azureAppConfigurationRefresher.TryRefreshAllRegisteredKeysAsync();
-            return Ok(result);
+            await _azureAppConfigurationRefresher.RefreshAllRegisteredKeysAsync();
+            return Ok();
         }
     }
 }

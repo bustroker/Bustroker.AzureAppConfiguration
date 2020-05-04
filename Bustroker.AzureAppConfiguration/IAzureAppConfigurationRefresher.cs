@@ -14,6 +14,6 @@ namespace Bustroker.AzureAppConfiguration
         /// Return values are the return values of each IConfigurationRefresher's refresh operation
         /// i.e. whether the refresh operation succeeded
         /// </summary>
-        Task<IEnumerable<bool>> TryRefreshAllRegisteredKeysAsync();
+        Task RefreshAllRegisteredKeysAsync();
     }
 }

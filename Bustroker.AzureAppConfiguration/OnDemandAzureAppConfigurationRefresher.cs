@@ -31,19 +31,14 @@ namespace Bustroker.AzureAppConfiguration
 
         public int RegisteredConfigurationRefreshersCount => _configurationRefreshers.Count;
 
-        public async Task<IEnumerable<bool>> TryRefreshAllRegisteredKeysAsync()
+        public async Task RefreshAllRegisteredKeysAsync()
         {
-            var result = new List<bool>();
-
             var refreshTasks = new List<Task>();
             foreach (var refresher in _configurationRefreshers)
             {
-                refreshTasks.Add(refresher.TryRefreshAsync().ContinueWith(x => result.Add(x.Result)));
+                refreshTasks.Add(refresher.RefreshAsync());
             }
             await Task.WhenAll(refreshTasks);
-
-            return result;
         }
     }
-
 }
