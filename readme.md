@@ -6,7 +6,8 @@
 bustroker-pocs-configuration:AppSettings:Sentinel => 0
 bustroker-pocs-configuration:AppSettings:BadGuyName => Mr Orange
 
-### Add a refreshing ConfigurationProvider
+### Configure Refreshing
+Add a refreshing ConfigurationProvider
 ```
 // Program.CreateHostBuilder(...)
 webBuilder                        
@@ -33,7 +34,8 @@ services.AddScoped<IAzureAppConfigurationRefresher, OnDemandAzureAppConfiguratio
 
 >**Note: DO NOT configure the configuration refreshing middleware (app.UseAzureAppConfiguration()), which is actually the whole point.**
 
-### To use the configuration values, inject IOptionsSnapshot into the Controller
+### Using Configuration values
+To use the configuration values, inject IOptionsSnapshot into the Controller
 ```
 // AzAppConfigurationController.cs
 [ApiController]
@@ -58,7 +60,8 @@ public class AzAppConfigurationController : ControllerBase
 
 - **NOTE: it's important to use IOptionsSnapshot, and not IOptions (wouldn't refresh anyway unless restarted the application), nor IOptionsMonitor (could change the values in the middle of a request potentially leading to weird results).**
 
-### To refresh configuration with new values in AzureAppConfig service, inject IAzureAppConfigurationRefresher into a Controller
+### Refresh Configuration
+To refresh configuration with new values in AzureAppConfig service, inject IAzureAppConfigurationRefresher into a Controller
 ```
 // RefreshAzAppConfigurationController
 
