@@ -15,3 +15,11 @@ Bustroker.AzureAppConfiguration.WebApi:SecretInKeyvault => The value is kept in 
 /azappconfiguration => will return all the params in AppSettings
 /refreshazappconfiguration => will refresh all params, i.e., if _sentinel_ has changed, all the config will be refreshed.
 /refreshazappconfiguration/count => just to check how many IConfigurationRefreshers have been configured.
+
+### pack and push nuget package
+set nuget package version in Bustroker.AzureAppConfiguration.csproj
+```
+cd Bustroker.AzureAppConfiguration
+dotnet pack
+dotnet nuget push [package.nupkg] --api-key [APIKEY] --source https://api.nuget.org/v3/index.json
+```

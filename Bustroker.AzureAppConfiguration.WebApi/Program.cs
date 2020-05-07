@@ -37,7 +37,7 @@ namespace Bustroker.AzureAppConfiguration.WebApi
                                             })
                                             .ConfigureRefresh(refreshOptions =>
                                             {
-                                                refreshOptions.Register("Bustroker.AzureAppConfiguration:sentinel", refreshAll: true)
+                                                refreshOptions.Register("Bustroker.AzureAppConfiguration.WebApi:sentinel", refreshAll: true)
                                                         .SetCacheExpiration(TimeSpan.FromSeconds(1));
                                             });
                                     }, optional: true)
@@ -50,7 +50,7 @@ namespace Bustroker.AzureAppConfiguration.WebApi
                                             })
                                             .ConfigureRefresh(refreshOptions =>
                                             {
-                                                refreshOptions.Register("Bustroker.AzureAppConfiguration:sentinel", refreshAll: true)
+                                                refreshOptions.Register("Bustroker.AzureAppConfiguration.WebApi:sentinel", refreshAll: true)
                                                         .SetCacheExpiration(TimeSpan.FromSeconds(1));
                                             });
                                     }, optional: true);
