@@ -25,8 +25,8 @@ namespace Bustroker.AzureAppConfiguration.WebApi.Controllers
             return Ok(_azureAppConfigurationRefresher.RegisteredConfigurationRefreshersCount);
         }
         
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpPost]
+        public async Task<IActionResult> Post()
         {
             await _azureAppConfigurationRefresher.RefreshAllRegisteredKeysAsync();
             return Ok();
