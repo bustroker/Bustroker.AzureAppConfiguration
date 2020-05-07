@@ -25,7 +25,7 @@ namespace Bustroker.AzureAppConfiguration.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {            
-            services.Configure<AppSettings>(Configuration.GetSection("bustroker-pocs-configuration:AppSettings"));
+            services.Configure<AppSettings>(Configuration.GetSection("Bustroker.AzureAppConfiguration.WebApi"));
             services.AddScoped<IAzureAppConfigurationRefresher, OnDemandAzureAppConfigurationRefresher>();
             services.AddControllers();
         }
